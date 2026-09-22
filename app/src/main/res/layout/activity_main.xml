@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#101318">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="VoiceGuard"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="AI Voice Clone Detection"
+            android:textColor="#AAB2BD"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginTop="6dp" />
+
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="READY"
+            android:textColor="#FFFFFF"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="60dp" />
+
+        <TextView
+            android:id="@+id/probabilityText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Synthetic probability: 0.00%"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:id="@+id/windowText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Waiting for audio..."
+            android:textColor="#AAB2BD"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_marginTop="12dp" />
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="START ANALYSIS"
+            android:textSize="17sp"
+            android:layout_marginTop="50dp" />
+
+        <Button
+            android:id="@+id/stopButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="STOP ANALYSIS"
+            android:textSize="17sp"
+            android:layout_marginTop="15dp"
+            android:enabled="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Local AI inference - No cloud required"
+            android:textColor="#777F89"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:layout_marginTop="40dp" />
+
+    </LinearLayout>
+
+</ScrollView>
