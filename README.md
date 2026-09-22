@@ -1,934 +1,487 @@
-\# 🛡️ VoiceGuard Android
+# 🛡️ VoiceGuard Android
 
+### AI-Powered Voice Cloning & Synthetic Speech Detection
 
+VoiceGuard is an Android application designed to detect **AI-generated, synthetic, and voice-cloned audio** using an **AASIST-inspired audio anti-spoofing deep learning model**.
 
-\### AI-Powered Real-Time Voice Cloning \& Spoof Detection
+The application performs model inference **directly on the Android device using ONNX Runtime**, reducing the need for cloud-based processing and enabling a mobile-first approach to voice authenticity analysis.
 
+---
 
-
-VoiceGuard is an Android application designed to detect \*\*AI-generated, synthetic, and voice-cloned audio\*\* using an \*\*AASIST-inspired anti-spoofing deep learning model\*\*.
-
-
-
-The application performs inference \*\*directly on the Android device using ONNX Runtime\*\*, reducing the need for cloud services and helping keep audio processing local.
-
-
-
-\---
-
-
-
-\## 🚨 Problem
-
-
+## 🚨 Problem
 
 Voice cloning technology can generate highly realistic speech from a person's voice.
 
+Such technology can potentially be misused for:
 
+* 📞 Impersonation calls
+* 💰 Financial scams
+* 🔐 Social engineering
+* 👤 Identity impersonation
+* 🎭 Fake voice recordings
 
-Attackers can potentially use cloned voices for:
+Traditional speaker verification focuses primarily on **who is speaking**. VoiceGuard focuses on an additional question:
 
+> **Is the speech genuine, or was it generated or manipulated by an AI system?**
 
+---
 
-\* 📞 Impersonation calls
-
-\* 💰 Financial scams
-
-\* 🔐 Social engineering
-
-\* 👤 Identity impersonation
-
-\* 🎭 Fake voice recordings
-
-
-
-Traditional voice verification systems may identify \*\*who is speaking\*\*, but they do not necessarily determine whether the speech itself was \*\*genuine or AI-generated\*\*.
-
-
-
-VoiceGuard focuses on detecting this difference.
-
-
-
-\---
-
-
-
-\## 💡 Solution
-
-
+## 💡 Solution
 
 VoiceGuard analyzes an input speech sample and estimates whether it is:
 
+* 🟢 **Real / Genuine**
+* 🔴 **Synthetic / AI-generated**
 
+The application uses an **AASIST-inspired audio anti-spoofing neural network** trained to learn patterns associated with synthetic and spoofed speech.
 
-\* 🟢 \*\*Real / Genuine\*\*
-
-\* 🔴 \*\*Synthetic / AI-generated\*\*
-
-
-
-The application uses an \*\*AASIST-inspired audio anti-spoofing neural network\*\* trained to identify artifacts and patterns associated with synthetic speech.
-
-
-
-\### Basic Pipeline
-
-
+### Basic Pipeline
 
 ```text
-
-&#x20;       🎙️ Audio Input
-
-&#x20;             │
-
-&#x20;             ▼
-
-&#x20;     Audio Preprocessing
-
-&#x20;             │
-
-&#x20;             ▼
-
-&#x20;     16 kHz Mono Audio
-
-&#x20;             │
-
-&#x20;             ▼
-
-&#x20;     3-Second Audio Segment
-
-&#x20;             │
-
-&#x20;             ▼
-
-&#x20;      AASIST Model
-
-&#x20;             │
-
-&#x20;             ▼
-
-&#x20;      ONNX Runtime
-
-&#x20;             │
-
-&#x20;             ▼
-
-&#x20;     Spoof Probability
-
-&#x20;             │
-
-&#x20;       ┌─────┴─────┐
-
-&#x20;       ▼           ▼
-
-&#x20;     REAL       SYNTHETIC
-
+        🎙️ Audio Input
+              │
+              ▼
+      Audio Preprocessing
+              │
+              ▼
+       16 kHz Mono Audio
+              │
+              ▼
+     ~3-Second Audio Segment
+              │
+              ▼
+      AASIST-Inspired Model
+              │
+              ▼
+        ONNX Runtime
+              │
+              ▼
+      Spoof Probability
+              │
+        ┌─────┴─────┐
+        ▼           ▼
+      REAL       SYNTHETIC
 ```
 
+---
 
+## ✨ Features
 
-\---
+### 🎙️ Audio Analysis
 
+Analyze speech audio for potential synthetic or spoofed speech characteristics.
 
+### 🤖 AI-Based Detection
 
-\## ✨ Features
+Uses an AASIST-inspired neural network for audio anti-spoofing.
 
+### 📱 On-Device Inference
 
+The trained model is converted to **ONNX** and executed locally using ONNX Runtime.
 
-\### 🎙️ Audio Analysis
+### 🔒 Privacy-Friendly Processing
 
+The model can perform inference locally without requiring audio to be uploaded to a remote AI server.
 
+### ⚡ Lightweight Deployment
 
-Analyze recorded or supplied speech samples for potential voice spoofing.
+The ONNX model is packaged directly inside the Android application.
 
+### 📊 Probability-Based Output
 
+The application provides a model probability indicating how strongly the input is classified toward synthetic speech.
 
-\### 🤖 AI-Based Detection
+---
 
+## 🧠 AI Model
 
+VoiceGuard uses an **AASIST-inspired architecture** for audio anti-spoofing.
 
-Uses an AASIST-inspired neural network trained for audio anti-spoofing.
-
-
-
-\### 📱 On-Device Inference
-
-
-
-The trained model is converted to \*\*ONNX\*\* and executed locally using ONNX Runtime.
-
-
-
-\### 🔒 Privacy-Friendly Architecture
-
-
-
-Audio does not need to be uploaded to a remote AI server for model inference.
-
-
-
-\### ⚡ Lightweight Deployment
-
-
-
-The ONNX model is packaged inside the Android application.
-
-
-
-\### 📊 Probability-Based Result
-
-
-
-The application provides a synthetic/real probability to help indicate the model's confidence.
-
-
-
-\---
-
-
-
-\## 🧠 Model
-
-
-
-VoiceGuard uses an \*\*AASIST-inspired architecture\*\*.
-
-
-
-AASIST stands for:
-
-
+AASIST refers to:
 
 > Audio Anti-Spoofing using Integrated Spectro-Temporal graph attention networks
 
+The approach is designed to learn discriminative patterns from speech that can help distinguish genuine speech from spoofed or synthetic speech.
 
-
-The model is designed to learn discriminative patterns from speech that can help distinguish genuine speech from spoofed or synthetic speech.
-
-
-
-\### Model Input
-
-
+### Model Input
 
 ```text
-
 Sample Rate : 16,000 Hz
-
 Channels    : Mono
-
-Duration    : \~3 seconds
-
+Duration    : Approximately 3 seconds
 Samples     : 48,000
-
 ```
 
+### Model Output
 
-
-\### Model Output
-
-
-
-The model produces a prediction representing the likelihood of the input being synthetic.
-
-
+The model produces a prediction representing the likelihood that the input audio is synthetic.
 
 Example:
 
-
-
 ```text
-
 Real Probability      : 0.18
-
 Synthetic Probability : 0.82
 
-
-
 Result: SYNTHETIC
-
 ```
 
+The displayed probability is a **model prediction**, not a guarantee that an audio sample is malicious or cloned.
 
+---
 
-\---
-
-
-
-\## 📱 Android Architecture
-
-
+## 📱 Android Architecture
 
 ```text
-
 ┌──────────────────────────────┐
-
 │        Android App           │
-
 ├──────────────────────────────┤
-
 │                              │
-
-│      User Audio Input        │
-
-│              │               │
-
-│              ▼               │
-
-│     Audio Preprocessing      │
-
-│              │               │
-
-│              ▼               │
-
-│       ONNX Model Input       │
-
-│              │               │
-
-│              ▼               │
-
-│       ONNX Runtime           │
-
-│              │               │
-
-│              ▼               │
-
-│     AASIST-Inspired Model    │
-
-│              │               │
-
-│              ▼               │
-
-│    Synthetic Probability     │
-
-│              │               │
-
-│              ▼               │
-
-│       Detection Result       │
-
+│       Audio Input            │
+│            │                 │
+│            ▼                 │
+│   Audio Preprocessing        │
+│            │                 │
+│            ▼                 │
+│      Model Input             │
+│            │                 │
+│            ▼                 │
+│      ONNX Runtime            │
+│            │                 │
+│            ▼                 │
+│  AASIST-Inspired Model       │
+│            │                 │
+│            ▼                 │
+│ Synthetic Probability        │
+│            │                 │
+│            ▼                 │
+│     Detection Result         │
 │                              │
-
 └──────────────────────────────┘
-
 ```
 
+---
 
-
-\---
-
-
-
-\## 🛠️ Technologies Used
-
-
+## 🛠️ Technologies Used
 
 | Technology                   | Purpose                         |
-
 | ---------------------------- | ------------------------------- |
-
 | Kotlin                       | Android application development |
-
 | Android Studio               | Development environment         |
-
-| XML                          | Android UI                      |
-
+| XML                          | Android user interface          |
 | ONNX                         | Model deployment format         |
-
 | ONNX Runtime                 | On-device model inference       |
-
 | Python                       | Model training and conversion   |
-
 | PyTorch                      | Deep learning model development |
-
 | AASIST-inspired architecture | Audio anti-spoofing             |
+| Git & GitHub                 | Version control                 |
 
-| Git \& GitHub                 | Version control                 |
+---
 
-
-
-\---
-
-
-
-\## 📂 Project Structure
-
-
+## 📂 Project Structure
 
 ```text
-
-VoiceGuardAndroid/
-
+voiceguard/
 │
-
 ├── app/
-
+│   ├── build.gradle
+│   │
 │   └── src/
-
 │       └── main/
-
-│           ├── java/
-
-│           │   └── .../
-
-│           │       └── MainActivity.kt
-
+│           ├── AndroidManifest.xml
 │           │
-
-│           ├── res/
-
-│           │   ├── layout/
-
-│           │   ├── drawable/
-
-│           │   └── values/
-
-│           │
-
 │           ├── assets/
-
-│           │   └── aasist.onnx
-
+│           │   └── aasistmodel.onnx
 │           │
-
-│           └── AndroidManifest.xml
-
+│           ├── java/
+│           │   └── com/
+│           │       └── voiceguard/
+│           │           └── app/
+│           │               ├── MainActivity.kt
+│           │               └── convert_embedded_onnx.py
+│           │
+│           └── res/
+│               ├── layout/
+│               │   └── activity_main.xml
+│               │
+│               └── values/
+│                   ├── strings.xml
+│                   └── themes.xml
 │
-
+├── gradle/
+│   └── wrapper/
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+│
+├── .gitignore
 ├── build.gradle
-
+├── gradle.properties
+├── gradlew
+├── gradlew.bat
 ├── settings.gradle
-
 └── README.md
-
 ```
 
+---
 
+## ⚙️ Requirements
 
-\---
+* Android Studio
+* Android SDK
+* Kotlin
+* Android device or emulator
+* Microphone-enabled Android device
+* ONNX Runtime for Android
 
+For actual audio testing, a **physical Android device** is recommended.
 
+---
 
-\## ⚙️ Requirements
+## 🚀 Installation
 
-
-
-\* Android Studio
-
-\* Android device or emulator
-
-\* Android device with microphone support
-
-\* Kotlin
-
-\* ONNX Runtime for Android
-
-
-
-For actual audio testing, a \*\*physical Android device\*\* is recommended.
-
-
-
-\---
-
-
-
-\## 🚀 Installation
-
-
-
-\### 1. Clone the repository
-
-
+### 1. Clone the repository
 
 ```bash
-
 git clone https://github.com/SivananthamP/voiceguard.git
-
 ```
 
+### 2. Open the project
 
+Open the cloned `voiceguard` folder in **Android Studio**.
 
-\### 2. Open the project
+Allow Android Studio to synchronize the Gradle project and download the required dependencies.
 
+### 3. Build the project
 
-
-Open the cloned project in \*\*Android Studio\*\*.
-
-
-
-\### 3. Build the project
-
-
-
-Allow Gradle to download the required dependencies.
-
-
-
-Then select:
-
-
+From Android Studio:
 
 ```text
-
 Build → Make Project
-
 ```
 
-
-
-\### 4. Connect an Android device
-
-
+### 4. Connect an Android device
 
 Enable:
 
-
-
 ```text
-
 Developer Options
-
 USB Debugging
-
 ```
 
+Connect the Android device to your computer.
 
-
-Then connect the device to your computer.
-
-
-
-\### 5. Run
-
-
+### 5. Run the application
 
 Click:
 
-
-
 ```text
-
 ▶ Run
-
 ```
 
+Android Studio will build and install VoiceGuard on the connected device.
 
+---
 
-Android Studio will install VoiceGuard on the connected device.
+## 🔐 Permissions
 
+VoiceGuard requires microphone access when audio is captured from the device.
 
-
-\---
-
-
-
-\## 🔐 Permissions
-
-
-
-VoiceGuard may require microphone permission for recording/analyzing audio.
-
-
+The application uses:
 
 ```xml
-
-<uses-permission android:name="android.permission.RECORD\_AUDIO"/>
-
+<uses-permission android:name="android.permission.RECORD_AUDIO"/>
 ```
 
+Microphone access should be granted by the user when requested by Android.
 
+---
 
-The application should request this permission at runtime before accessing the microphone.
-
-
-
-\---
-
-
-
-\## 🧪 Detection Flow
-
-
+## 🧪 Detection Flow
 
 When an audio sample is provided:
 
-
-
 ```text
-
-1\. Capture audio
-
-&#x20;      ↓
-
-2\. Convert to mono
-
-&#x20;      ↓
-
-3\. Resample to 16 kHz
-
-&#x20;      ↓
-
-4\. Prepare approximately 3 seconds of audio
-
-&#x20;      ↓
-
-5\. Normalize/preprocess audio
-
-&#x20;      ↓
-
-6\. Pass tensor to ONNX model
-
-&#x20;      ↓
-
-7\. Run inference
-
-&#x20;      ↓
-
-8\. Obtain prediction
-
-&#x20;      ↓
-
-9\. Display result
-
+1. Capture audio
+       ↓
+2. Convert to mono
+       ↓
+3. Resample to 16 kHz
+       ↓
+4. Prepare approximately 3 seconds of audio
+       ↓
+5. Normalize / preprocess audio
+       ↓
+6. Prepare model tensor
+       ↓
+7. Run ONNX inference
+       ↓
+8. Obtain prediction
+       ↓
+9. Display detection result
 ```
 
+---
 
-
-\---
-
-
-
-\## 📊 Example Result
-
-
+## 📊 Example Result
 
 ```text
-
-VOICEGUARD ANALYSIS
-
-
-
-Synthetic Probability
-
-&#x20;       82%
-
-
-
-Prediction
-
-&#x20;       ⚠️ SYNTHETIC
-
-
-
-Confidence
-
-&#x20;       HIGH
-
+╔══════════════════════════════╗
+║     VOICEGUARD ANALYSIS      ║
+╠══════════════════════════════╣
+║                              ║
+║ Synthetic Probability: 82%   ║
+║                              ║
+║ Prediction: SYNTHETIC        ║
+║                              ║
+╚══════════════════════════════╝
 ```
 
+The probability represents the model's output and should not be interpreted as absolute proof that an audio recording is AI-generated.
 
+---
 
-The probability is a \*\*model output\*\*, not a guarantee that an audio sample is malicious or genuinely cloned.
+## 🔬 Training Pipeline
 
-
-
-\---
-
-
-
-\## 🔬 Training Pipeline
-
-
-
-The model was developed using Python and PyTorch.
-
-
+The model development process uses Python and PyTorch before deployment to Android.
 
 ```text
-
 Training Dataset
-
-&#x20;      │
-
-&#x20;      ▼
-
+       │
+       ▼
 Audio Preprocessing
-
-&#x20;      │
-
-&#x20;      ▼
-
+       │
+       ▼
 16 kHz Mono Audio
-
-&#x20;      │
-
-&#x20;      ▼
-
+       │
+       ▼
 AASIST-Inspired Model
-
-&#x20;      │
-
-&#x20;      ▼
-
+       │
+       ▼
 PyTorch Training
-
-&#x20;      │
-
-&#x20;      ▼
-
+       │
+       ▼
 Trained Checkpoint
-
-&#x20;      │
-
-&#x20;      ▼
-
+       │
+       ▼
 ONNX Conversion
-
-&#x20;      │
-
-&#x20;      ▼
-
+       │
+       ▼
 Android Deployment
-
 ```
 
+---
 
-
-\---
-
-
-
-\## 🔄 PyTorch → ONNX → Android
-
-
+## 🔄 PyTorch → ONNX → Android
 
 ```text
-
 PyTorch Model
-
-&#x20;    │
-
-&#x20;    ▼
-
-.pth checkpoint
-
-&#x20;    │
-
-&#x20;    ▼
-
+      │
+      ▼
+.pth Checkpoint
+      │
+      ▼
 ONNX Export
-
-&#x20;    │
-
-&#x20;    ▼
-
-aasist.onnx
-
-&#x20;    │
-
-&#x20;    ▼
-
+      │
+      ▼
+aasistmodel.onnx
+      │
+      ▼
 Android assets/
-
-&#x20;    │
-
-&#x20;    ▼
-
+      │
+      ▼
 ONNX Runtime
-
-&#x20;    │
-
-&#x20;    ▼
-
+      │
+      ▼
 Mobile Inference
-
 ```
 
+---
 
+## 🎯 Project Goal
 
-\---
+The goal of VoiceGuard is to explore a **mobile-first AI-based defense layer against voice cloning and synthetic speech attacks**.
 
+Instead of depending entirely on cloud-based analysis, the project demonstrates the deployment of an audio anti-spoofing model directly onto an Android device.
 
+---
 
-\## 🎯 Project Goal
+## ⚠️ Limitations
 
-
-
-The goal of VoiceGuard is to provide a \*\*mobile-first AI-based defense layer against voice cloning and synthetic speech attacks\*\*.
-
-
-
-Instead of depending entirely on cloud-based analysis, the project explores whether anti-spoofing inference can be performed directly on a smartphone.
-
-
-
-\---
-
-
-
-\## ⚠️ Limitations
-
-
-
-VoiceGuard is a research/prototype system and should not be treated as a guaranteed fraud detector.
-
-
+VoiceGuard is a **research and prototype system** and should not be treated as a guaranteed fraud or deepfake detector.
 
 Performance can vary depending on:
 
-
-
-\* Audio quality
-
-\* Background noise
-
-\* Recording device
-
-\* Compression
-
-\* Speaker characteristics
-
-\* Unseen voice-cloning systems
-
-\* Synthetic speech generation methods
-
-\* Dataset differences
-
-
+* Audio quality
+* Background noise
+* Recording device
+* Audio compression
+* Speaker characteristics
+* Unseen voice-cloning systems
+* Synthetic speech generation methods
+* Dataset differences
 
 A model trained on particular spoofing methods may not detect every future voice-cloning technique.
 
+---
 
+## 🔮 Future Improvements
 
-\---
+* [ ] Real-time streaming audio analysis
+* [ ] Sliding-window inference
+* [ ] Improved noise robustness
+* [ ] Larger multilingual dataset
+* [ ] More voice-cloning generators during training
+* [ ] Speaker verification + spoof detection fusion
+* [ ] Call-level detection research
+* [ ] Hardware acceleration
+* [ ] Improved model calibration
+* [ ] Continuous live risk monitoring
 
+---
 
+## 🏆 Hackathon / SIH Context
 
-\## 🔮 Future Improvements
-
-
-
-\* \[ ] Real-time streaming audio analysis
-
-\* \[ ] Sliding-window inference
-
-\* \[ ] Improved noise robustness
-
-\* \[ ] Larger multilingual dataset
-
-\* \[ ] More voice-cloning generators during training
-
-\* \[ ] Speaker verification + spoof detection fusion
-
-\* \[ ] Call-level detection research
-
-\* \[ ] Hardware acceleration
-
-\* \[ ] Improved model calibration
-
-\* \[ ] Continuous live risk monitoring
-
-
-
-\---
-
-
-
-\## 🏆 Hackathon / SIH Context
-
-
-
-VoiceGuard was developed as an \*\*AI-based solution for detecting voice-cloning impersonation attacks\*\*.
-
-
+VoiceGuard was developed as an **AI-based solution for detecting voice-cloning impersonation attacks**.
 
 The project combines:
 
-
-
 ```text
-
 Deep Learning
-
-&#x20;     +
-
+      +
 Audio Anti-Spoofing
-
-&#x20;     +
-
-ONNX Model Optimization
-
-&#x20;     +
-
-Android Deployment
-
-&#x20;     +
-
+      +
+ONNX Model Deployment
+      +
+Android Development
+      +
 On-Device AI
-
 ```
 
+This allows an audio anti-spoofing model developed in a Python/PyTorch environment to be deployed as a mobile Android prototype.
 
+---
 
-This enables the trained anti-spoofing model to move from a Python research environment into a practical mobile prototype.
-
-
-
-\---
-
-
-
-\## 👨‍💻 Development
-
-
+## 👨‍💻 Development
 
 Built with:
 
+**Python + PyTorch + AASIST-inspired architecture + ONNX + Kotlin + Android Studio**
 
+---
 
-\*\*Python + PyTorch + AASIST-inspired architecture + ONNX + Kotlin + Android Studio\*\*
+## 📄 License
 
+This project is intended for **educational, research, and prototype development purposes**.
 
+If the project is released as open source, an appropriate license can be added to the repository.
 
-\---
+---
 
+## ⭐ Acknowledgements
 
+This project builds upon research in **audio deepfake and anti-spoofing detection**, particularly approaches related to AASIST and graph-attention-based audio spoof detection.
 
-\## 📄 License
+---
 
+## 🛡️ VoiceGuard
 
-
-This project is intended for educational, research, and prototype development purposes.
-
-
-
-Add an appropriate open-source license such as MIT if you decide to release the source code publicly.
-
-
-
-\---
-
-
-
-\## ⭐ Acknowledgements
-
-
-
-This project builds upon research in \*\*audio deepfake and anti-spoofing detection\*\*, particularly the ideas behind AASIST and graph-attention-based audio spoof detection.
-
-
-
-\---
-
-
-
-\### 🛡️ VoiceGuard
-
-
-
-\*\*Detect the voice. Verify the authenticity.\*\*
-
-
-
+**Detect the voice. Verify the authenticity.**
